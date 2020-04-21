@@ -4,14 +4,25 @@ import java.util.*;
 public class HangmanApp {
 
 	public static void main(String[] args) {
+			
 		
-			char playAgain;
-		
-		do {		
 			//local variables
+			char playAgain;
+			int lost, won, gamesPlayed;
+		
 			Scanner input = new Scanner(System.in);
 			Hangman hm = new Hangman();
-
+			GameStatistics gs = new GameStatistics();
+			
+			
+			//statistics
+			lost = gs.getGamesLost();
+			won = gs.getGamesWon();
+			gamesPlayed = gs.getTotalGamesPlayed();
+			
+			
+		do {
+			
 			String showWord; //holds the chosen word
 			String[] words = {"macchiatto", "cosmopolitan", "tequila", "americano", "cappucino", "frappucino", "espresso", "margarita" };					char[] charstring;
 			int lives = 6;
@@ -32,6 +43,8 @@ public class HangmanApp {
 			//create array of chars from the encrypted word
 			charstring = showWord.toCharArray();
 		
+			
+			
 		
 		//introduction message
 		System.out.println();
@@ -43,12 +56,19 @@ public class HangmanApp {
 		System.out.println("       You can only make 6 wrong guesses!");
 		System.out.println("          To begin the game, press Y!");
 		
+		//display game statistics
+		System.out.println();
+		System.out.println("Total games played: " + gamesPlayed);
+		System.out.println("Games lost: " + lost);
+		System.out.println("Games won: " + won);
+		
+		
 		char answer = input.next().toUpperCase().charAt(0);
 		
 		//to store the letters already used in the guessing process
 		ArrayList<Character> usedLetters = new ArrayList<Character>();
-
-
+		
+		
 		//loop to check users answer, and in case it is Y, then continue with game
 		if(answer == 'Y') {
 			
@@ -85,6 +105,7 @@ public class HangmanApp {
 					System.out.println(charstring);
 					System.out.println("           ***            ");
 					System.out.println("Congratulations, You Won!");
+					won++;
 					break;
 				}
 				
@@ -102,7 +123,7 @@ public class HangmanApp {
 				System.out.println("___________________________");
 				System.out.println("     Sorry, you lost!");
 				System.out.println("The secret word is: " + secretWord);
-				
+				lost++;
 			}
 			
 		}else{//if user doesn't choose Y, the game does not start. a goodbye message is displayed 
@@ -119,8 +140,12 @@ public class HangmanApp {
 			if(playAgain != 'Y') {
 				System.out.println("    Sorry to see you leave. Come back soon! :)");
 				System.out.println("                      ***          ");
+				//gs.displayStats();
 				break;
 			}
+			
+			gamesPlayed++;
+			
 		
 		}while(playAgain == 'Y');	
 
